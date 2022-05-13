@@ -92,3 +92,5 @@ and ciudad <> 'Cordoba';
 | ------------------|:----------------:|----------------:|
 |  Rosario   | Santa Fe | 1 |
 |  Santa Fe  |Santa Fe  | 1| 
+
+##### va filtrar la cantidad de registros menores a 2 y excluyendo cordoba
