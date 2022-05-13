@@ -1,5 +1,6 @@
 # FUNCION-HAVING-en-Oracle-SQL
-#### Nos permite seleccionar o rechazar un grupo de registros al momento de realizar una consulta en una tabla, generalmente la clausula HAVING va seguido de una condicion de busqueda para seleccionar ciertas filas retornadas x la clausula GROUP BY
+#### Nos permite seleccionar o rechazar un grupo de registros al momento de realizar una consulta en una tabla, generalmente la clausula HAVING va seguido de una condicion de busqueda para seleccionar ciertas filas retornadas x la clausula GROUP BY.
+#### Having solo funciona con count ojito :d
 
 ```sql
  create table clientes (
@@ -36,7 +37,7 @@
  select * from clientes
  ```
  
-  | nombre            | domicilio           |   ciudad   |  provincia   |  telefono   |  
+ | nombre            | domicilio           |   ciudad   |  provincia   |  telefono   |  
  | ------------------|:----------------:|----------------:| ---------:| -----------:| 
  | Lopez Marcos | Colon 111|  Cordoba |Cordoba | null |
  | Perez Ana | san Martin 222| Cruz del Eje   |Cordoba | 4578585 |
@@ -49,3 +50,45 @@
  | Ramos Betina | San Martin 999 |  Cordoba | Cordoba | 4223366 |
  | Lopez Lucas |  San Martin 1010   | Posadas       |  Misiones        | 0457858745|
  
+ ```sql
+select ciudad,provincia, count(*) as "Cantidad"
+from clientes
+group by ciudad, provincia;
+```
+
+|   ciudad   |  provincia   |  Cantidad   |  
+| ------------------|:----------------:|----------------:|
+| Cordoba |  Cordoba | 2 |
+| Posadas |  Misiones | 1 |
+| Villa del Rosario | Cordoba | 2 |
+| Cruz del Eje   |Cordoba | 3 |
+|  Rosario   | Santa Fe | 1 |
+|  Santa Fe  |Santa Fe  | 1| 
+
+____
+
+ ```sql
+select ciudad,provincia, count(*) as "Cantidad"
+from clientes
+group by ciudad, provincia
+having count(*)>1;
+```
+|   ciudad   |  provincia   |  Cantidad   |  
+| ------------------|:----------------:|----------------:|
+| Cordoba |  Cordoba | 2 |
+| Villa del Rosario | Cordoba | 2 |
+| Cruz del Eje   |Cordoba | 3 |
+
+#### filtra una cantidad especifica de registros q ya fueron agrupados al momento de hacer la consulta .
+
+``` sql
+select ciudad, count(*) from clientes
+where domicilio like '%San Martin%' -- sistema busca que coincida exactamente todo el texto
+group by ciudad
+having count(*)<2
+and ciudad <> 'Cordoba';
+```
+|   ciudad   |  provincia   |  Cantidad   |  
+| ------------------|:----------------:|----------------:|
+|  Rosario   | Santa Fe | 1 |
+|  Santa Fe  |Santa Fe  | 1| 
